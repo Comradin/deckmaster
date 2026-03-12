@@ -11,7 +11,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/bendahl/uinput"
 	"github.com/godbus/dbus"
 	"github.com/mitchellh/go-homedir"
 	"github.com/muesli/streamdeck"
@@ -29,7 +28,7 @@ var (
 	deck *Deck
 
 	dbusConn *dbus.Conn
-	keyboard uinput.Keyboard
+	keyboard Keyboard
 	shutdown = make(chan error)
 
 	xorg          *Xorg
@@ -267,10 +266,11 @@ func run() error {
 	}
 
 	// initialize virtual keyboard
-	keyboard, err = uinput.CreateKeyboard("/dev/uinput", []byte("Deckmaster"))
+	keyboard, err = initKeyboard()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not create virtual input device (/dev/uinput): %s\n", err)
+		fmt.Fprintf(os.Stderr, "Could not create virtual input device: %s\n", err)
 		fmt.Fprintln(os.Stderr, "Emulating keyboard events will be disabled!")
+		keyboard = nil
 	} else {
 		defer keyboard.Close() //nolint:errcheck
 	}
