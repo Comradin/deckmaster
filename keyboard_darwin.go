@@ -4,11 +4,12 @@
 package main
 
 /*
-#cgo LDFLAGS: -framework CoreGraphics
+#cgo LDFLAGS: -framework CoreGraphics -framework CoreFoundation
 #include <CoreGraphics/CoreGraphics.h>
 
 void deckmaster_key_event(uint16_t keycode, int down) {
     CGEventRef event = CGEventCreateKeyboardEvent(NULL, (CGKeyCode)keycode, down != 0);
+    if (event == NULL) return;
     CGEventPost(kCGSessionEventTap, event);
     CFRelease(event);
 }
