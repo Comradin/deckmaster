@@ -36,17 +36,17 @@ func Connect(display string) (*Xorg, error) {
 }
 
 // Close is a no-op on macOS.
-func (x *Xorg) Close() {}
+func (x Xorg) Close() {}
 
 // TrackWindows is a no-op on macOS.
 func (x *Xorg) TrackWindows(ch chan interface{}, interval time.Duration) {}
 
 // CloseWindow returns an error on macOS.
-func (x *Xorg) CloseWindow(w Window) error {
+func (x Xorg) CloseWindow(w Window) error {
 	return errors.New("window management not supported on macOS")
 }
 
 // RequestActivation returns an error on macOS.
-func (x *Xorg) RequestActivation(w Window) error {
+func (x Xorg) RequestActivation(w Window) error {
 	return errors.New("window management not supported on macOS")
 }
