@@ -84,23 +84,38 @@ func loadFont(name string) (*truetype.Font, error) {
 	return freetype.ParseFont(ttf)
 }
 
+// loadFontWithFallbacks tries each font name in order, returning the first one found.
+func loadFontWithFallbacks(names ...string) (*truetype.Font, error) {
+	var lastErr error
+	for _, name := range names {
+		f, err := loadFont(name)
+		if err == nil {
+			return f, nil
+		}
+		lastErr = err
+	}
+	return nil, lastErr
+}
+
 func init() {
 	var err error
-	ttfFont, err = loadFont("Roboto-Regular.ttf")
+	// Try the traditional separate weight files first (Linux), then the variable
+	// font distributed by Homebrew on macOS (Roboto[wdth,wght].ttf).
+	ttfFont, err = loadFontWithFallbacks("Roboto-Regular.ttf", "Roboto[wdth,wght].ttf")
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error loading font:", err)
 		os.Exit(1)
 	}
 
-	ttfThinFont, err = loadFont("Roboto-Thin.ttf")
+	ttfThinFont, err = loadFontWithFallbacks("Roboto-Thin.ttf", "Roboto[wdth,wght].ttf")
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error loading font:", err)
-		os.Exit(1)
+		fmt.Fprintln(os.Stderr, "Warning: could not load thin font, falling back to regular:", err)
+		ttfThinFont = ttfFont
 	}
 
-	ttfBoldFont, err = loadFont("Roboto-Bold.ttf")
+	ttfBoldFont, err = loadFontWithFallbacks("Roboto-Bold.ttf", "Roboto[wdth,wght].ttf")
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error loading font:", err)
-		os.Exit(1)
+		fmt.Fprintln(os.Stderr, "Warning: could not load bold font, falling back to regular:", err)
+		ttfBoldFont = ttfFont
 	}
 }
