@@ -18,6 +18,18 @@ builds:
     goarm:
       - 6
       - 7
+  # Note: darwin builds require a macOS runner due to CGo cross-compilation constraints.
+  # Build this target using goreleaser on a macOS CI runner.
+  - id: darwin
+    binary: deckmaster
+    goos:
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    env:
+      - CGO_ENABLED=1
+    ldflags: -s -w -X main.Version={{ .Version }} -X main.CommitSHA={{ .Commit }}
 
 archives:
   - replacements:
