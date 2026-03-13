@@ -85,6 +85,20 @@ CGO_ENABLED=1 go build -o deckmaster .
 No additional drivers or udev-style rules are needed. IOKit HID works out of
 the box for vendor HID devices such as the Stream Deck.
 
+To verify that macOS can see your device, run:
+
+```bash
+# macOS 26 (Tahoe) and later
+system_profiler SPUSBHostDataType | grep -A5 -i elgato
+
+# macOS 15 (Sequoia) and earlier
+system_profiler SPUSBDataType | grep -A5 -i elgato
+```
+
+If the device appears there but deckmaster still reports "no Stream Deck
+devices found", make sure the official Elgato Stream Deck application is
+fully quit — it may hold an exclusive handle on the device.
+
 #### Accessibility permission
 
 Keyboard emulation requires the Accessibility permission. Grant it in:
