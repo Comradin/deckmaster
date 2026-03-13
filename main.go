@@ -11,7 +11,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/godbus/dbus"
 	"github.com/mitchellh/go-homedir"
 	"github.com/muesli/streamdeck"
 )
@@ -27,7 +26,6 @@ var (
 
 	deck *Deck
 
-	dbusConn *dbus.Conn
 	keyboard Keyboard
 	shutdown = make(chan error)
 
@@ -249,8 +247,7 @@ func run() error {
 	}
 
 	// initialize dbus connection
-	dbusConn, err = dbus.SessionBus()
-	if err != nil {
+	if err = initDbus(); err != nil {
 		return fmt.Errorf("Unable to connect to dbus: %s", err)
 	}
 

@@ -13,7 +13,6 @@ import (
 	"time"
 
 	"github.com/atotto/clipboard"
-	"github.com/godbus/dbus"
 	"github.com/muesli/streamdeck"
 )
 
@@ -172,14 +171,6 @@ func emulateClipboard(text string) {
 
 	// paste the string
 	emulateKeyPress("29-47") // ctrl-v
-}
-
-// executes a dbus method.
-func executeDBusMethod(object, path, method, args string) {
-	call := dbusConn.Object(object, dbus.ObjectPath(path)).Call(method, 0, args)
-	if call.Err != nil {
-		fmt.Fprintf(os.Stderr, "dbus call failed: %s\n", call.Err)
-	}
 }
 
 // executes a command.
