@@ -1,3 +1,6 @@
+//go:build linux
+// +build linux
+
 package main
 
 import (
@@ -256,4 +259,13 @@ func formatKeycodes(keycode string) string {
 	}
 
 	return keycode
+}
+
+func parseKeycode(key string) (int, bool) {
+	key = formatKeycodes(strings.TrimSpace(key))
+	v, err := strconv.Atoi(key)
+	if err != nil {
+		return 0, false
+	}
+	return v, true
 }
