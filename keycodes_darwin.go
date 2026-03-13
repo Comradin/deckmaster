@@ -124,6 +124,9 @@ var keycodes = map[string]int{
 	"Up":         0x7E,
 }
 
+// pasteKeys returns the keycode string for the paste action (Cmd+V on macOS).
+func pasteKeys() string { return "55-9" }
+
 func formatKeycodes(key string) string {
 	for k, v := range keycodes {
 		if strings.EqualFold(key, k) {

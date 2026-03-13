@@ -170,7 +170,7 @@ func emulateClipboard(text string) {
 	}
 
 	// paste the string
-	emulateKeyPress("29-47") // ctrl-v
+	emulateKeyPress(pasteKeys())
 }
 
 // executes a command.

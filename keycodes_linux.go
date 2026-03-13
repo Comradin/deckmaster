@@ -250,6 +250,9 @@ var keycodes = map[string]uint8{
 	"DisplayOff":       245,
 }
 
+// pasteKeys returns the keycode string for the paste action (Ctrl+V on Linux).
+func pasteKeys() string { return "29-47" }
+
 func formatKeycodes(keycode string) string {
 	for k, v := range keycodes {
 		if strings.EqualFold(keycode, k) {

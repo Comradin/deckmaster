@@ -22,6 +22,8 @@ builds:
   # Build this target using goreleaser on a macOS CI runner.
   - id: darwin
     binary: deckmaster
+    flags:
+      - -trimpath
     goos:
       - darwin
     goarch:
