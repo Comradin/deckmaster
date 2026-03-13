@@ -64,6 +64,41 @@ Make sure your user is part of the `plugdev` group and reload the rules with
 `sudo udevadm control --reload-rules`. Unplug and re-plug the device, and you
 should be good to go.
 
+### macOS
+
+#### Prerequisites
+
+- macOS 10.15 (Catalina) or later
+- Xcode Command Line Tools: `xcode-select --install`
+- Go 1.17 or higher
+
+#### Build
+
+CGO is required on macOS (for IOKit HID and CGEvent support):
+
+```bash
+CGO_ENABLED=1 go build -o deckmaster .
+```
+
+#### USB / HID access
+
+No additional drivers or udev-style rules are needed. IOKit HID works out of
+the box for vendor HID devices such as the Stream Deck.
+
+#### Accessibility permission
+
+Keyboard emulation requires the Accessibility permission. Grant it in:
+
+**System Settings → Privacy & Security → Accessibility**
+
+Add your terminal application (e.g. Terminal, iTerm2) or the `deckmaster`
+binary itself to the list and enable it.
+
+#### Known limitations
+
+- **D-Bus actions** are not supported on macOS.
+- **Recent Window widget** is not supported on macOS (requires X11).
+
 ### Starting deckmaster automatically
 
 If you want deckmaster to be started automatically upon device plugin, you can
